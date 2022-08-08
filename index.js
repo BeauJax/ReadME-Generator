@@ -125,10 +125,33 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+const writeToFile = (fileName, data) => {
+    return new Promise((resolve, reject) => {
 
 // TODO: Create a function to initialize appS
-function init() {}
+fs.writeFile('./dist.README.md', (fileName, data), err => {
+    if (err) {
+        reject(err);
+        return;
+    }
+    resolve({
+        ok: true,
+        message: 'README has been generated.'
+    });
+    })
+})
+};
+
+const init = () => {
+return inquirer.prompt(questions);
+}
 
 // Function call to initialize app
-init();
+init()
+    .then(data => {
+        console.log(data)
+        return generateMarkdown(data);
+    })
+    .then(data => {
+        return writeToFile('README.md', data)
+    });
